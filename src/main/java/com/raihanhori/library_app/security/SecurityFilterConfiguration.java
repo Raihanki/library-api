@@ -32,10 +32,18 @@ public class SecurityFilterConfiguration {
 		http.authorizeHttpRequests(request -> {
 			
 			request.requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
+			
 			.requestMatchers(HttpMethod.POST, "/api/v1/books").hasAuthority("ADMIN")
 			.requestMatchers(HttpMethod.PUT, "/api/v1/books/*").hasAuthority("ADMIN")
 			.requestMatchers(HttpMethod.DELETE, "/api/v1/books/*").hasAuthority("ADMIN")
+			
 			.requestMatchers(HttpMethod.GET, "/api/v1/users").authenticated()
+			
+			.requestMatchers(HttpMethod.GET, "/api/v1/transactions/*").authenticated()
+			.requestMatchers(HttpMethod.POST, "/api/v1/transactions").hasAuthority("ADMIN")
+			.requestMatchers(HttpMethod.PUT, "/api/v1/transactions/*").hasAuthority("ADMIN")
+			.requestMatchers(HttpMethod.GET, "/api/v1/transactions/book/*").authenticated()
+			.requestMatchers(HttpMethod.GET, "/api/v1/transactions/user/*").authenticated()
 			
 			.anyRequest().permitAll();
 		});

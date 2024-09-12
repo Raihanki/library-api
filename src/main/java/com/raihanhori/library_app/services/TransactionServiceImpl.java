@@ -82,7 +82,7 @@ public class TransactionServiceImpl implements TransactionService {
 	
 	@Override
 	public List<TransactionResource> findByUserId(Integer userId) {
-		List<Transaction> transactions = transactionRepository.findAllByUserIdOrOrderByCreatedAtDesc(userId);
+		List<Transaction> transactions = transactionRepository.findAllByUserIdOrderByCreatedAtDesc(userId);
 
 		List<TransactionResource> listTransaction = transactions.stream().map(t -> toTransactionResource(t)).toList();
 
@@ -97,7 +97,7 @@ public class TransactionServiceImpl implements TransactionService {
 		Book book = bookRepository.findById(request.getBookId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "book not found"));
 		User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
 		
-		Transaction transaction = transactionRepository.findByUserIdAndBookId(book.getId(), user.getId())
+		Transaction transaction = transactionRepository.findByUserIdAndBookId(user.getId(), book.getId())
 				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "transaction not found"));
 		
 		// check fine charge
@@ -107,6 +107,8 @@ public class TransactionServiceImpl implements TransactionService {
 			BigDecimal fine = new BigDecimal(days * 2000);
 			transaction.setFineAmount(fine);
 		}
+		
+		System.out.println("after check fine");
 		
 		transaction.setReturnDate(Instant.now());
 		transactionRepository.save(transaction);

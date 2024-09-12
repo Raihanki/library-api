@@ -82,7 +82,7 @@ public class TransactionController {
 		
 		return SuccessResponseHelper.<Object>builder()
 				.data(null)
-				.status(201)
+				.status(200)
 				.message("book returned successfully")
 				.build();
 	}

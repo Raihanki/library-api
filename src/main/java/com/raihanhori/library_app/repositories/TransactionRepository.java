@@ -13,6 +13,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	
 	List<Transaction> findAllByBookIdOrderByCreatedAtDesc(Integer bookId);
 	
-	List<Transaction> findAllByUserIdOrOrderByCreatedAtDesc(Integer userId);
+	List<Transaction> findAllByUserIdOrderByCreatedAtDesc(Integer userId);
 	
 }
